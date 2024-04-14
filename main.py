@@ -40,6 +40,7 @@ def on_click ():  # Génère le mot de passe en cliquant sur le bouton
                 mdp = Rmdp(int(difficulte.get()) - 1)
             label_mdp2.configure(text=str(mdp))
         button_copy = customtkinter.CTkButton(window, text="Copier", width=40, command=lambda: copier(mdp))
+        label_copy.configure(text='')
         button_copy.place(x=175, y=300)
 
 def checked ():
