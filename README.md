@@ -6,7 +6,7 @@ Features:
   - You can copy the password 😎  
   - You can choose the number of characters 😱  
   - It's free 🤑
-  - And it's created by a French 🟦⚪🟥
+  - And it's french 🟦⚪🟥
 
   
 
