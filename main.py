@@ -27,11 +27,11 @@ def copier (mdp):  # Copie le mot de passe généré
 
 def on_click ():  # Génère le mot de passe en cliquant sur le bouton
     if difficulte.get():
-        if int(difficulte.get()) > 30:
+        if int(difficulte.get()) > 800000:
             if checked() == 'on':
-                mdp = ''.join(RNombre(30))
+                mdp = ''.join(RNombre(800000))
             else:
-                mdp = Rmdp(30)
+                mdp = Rmdp(800000)
             label_mdp2.configure(text=mdp)
         else:
             if checked() == 'on':
@@ -54,9 +54,12 @@ window.resizable(False, False)
 label = customtkinter.CTkLabel(window, text="Entrez la difficulté: ", font=("", 20))
 label.place(x=10, y=50)
 
+label2 = customtkinter.CTkLabel(window, text="(max 800 000)", font=("", 12))
+label2.place(x=190, y=50)
+
 # Permet d'entrer la difficulté du mot de passe
-difficulte = customtkinter.CTkEntry(window, width=30, height=30)
-difficulte.place(x=280, y=50)
+difficulte = customtkinter.CTkEntry(window, width=60, height=30)
+difficulte.place(x=290, y=50)
 
 check_box = customtkinter.CTkCheckBox(window, text="Chiffres seulement", command=checked, onvalue="on", offvalue="off")
 check_box.place(x=50, y= 100)
