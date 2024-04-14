@@ -5,4 +5,5 @@ Features:
   
   - You can copy the password 😎  
   - You can choose the number of characters 😱  
-  - And it's free 🤑  
+  - It's free 🤑
+  - And it's created by a French 🟦⚪🟥
