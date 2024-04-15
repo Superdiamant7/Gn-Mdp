@@ -2,7 +2,8 @@ import customtkinter
 import random
 import pyperclip
 
-def RNombre (difficulte):  # Génère une suite de nombres aléatoire
+# Génère une suite de nombres aléatoire
+def RNombre (difficulte):
     i = 0
     nombre = []
     while i <= difficulte:
@@ -11,7 +12,8 @@ def RNombre (difficulte):  # Génère une suite de nombres aléatoire
     tableau_str = [str(element) for element in nombre]
     return tableau_str
 
-def Rmdp (difficulte):  # Remplace les nombres aléatoires par des charactères aléatoires
+# Remplace les nombres aléatoires par des charactères aléatoires
+def Rmdp (difficulte):
     characteres = ['a', '3', '/', ':', 'b', '-', '1', 'c', 'd', '4', 'e', 'f', '2', 'g', '!', 'h', 'i', 'j', '#', '9', 'k', 'l', 'm', 'n', '6', 'o', '+', 'p', 'q', 'r', '5', 's', '?', '@', 't', 'u', 'v', 'w', '7', 'x', 'y', '8', 'z']
     mdp_int = RNombre(difficulte)
     mdp_str = []
@@ -21,27 +23,42 @@ def Rmdp (difficulte):  # Remplace les nombres aléatoires par des charactères 
     mdp = ''.join(mdp_str)
     return mdp
 
-def copier (mdp):  # Copie le mot de passe généré
+# Copie le mot de passe généré
+def copier (mdp):
     pyperclip.copy(mdp)
     label_copy.configure(text="Copié ✅")
 
-def on_click ():  # Génère le mot de passe en cliquant sur le bouton
+# Génère le mot de passe en cliquant sur le bouton
+def on_click ():
+    global mdp
     if difficulte.get():
         if int(difficulte.get()) > 800000:
             if checked() == 'on':
                 mdp = ''.join(RNombre(800000))
             else:
                 mdp = Rmdp(800000)
-            label_mdp2.configure(text=mdp)
+                label_mdp2.configure(text=mdp)
+            label_mdp2.configure(text='*' * 800000)
         else:
             if checked() == 'on':
                 mdp = ''.join(RNombre(int(difficulte.get()) - 1))
             else:
                 mdp = Rmdp(int(difficulte.get()) - 1)
-            label_mdp2.configure(text=str(mdp))
+            label_mdp2.configure(text='*' * int(difficulte.get()))
         button_copy = customtkinter.CTkButton(window, text="Copier", width=40, command=lambda: copier(mdp))
         label_copy.configure(text='')
         button_copy.place(x=175, y=300)
+        show_mdp()
+
+# Défini si oui ou non l'utilisateur veut voir le mot de passe
+def show_mdp ():
+    try:
+        if label_show.get() == "on":
+            label_mdp2.configure(text=mdp)
+        else:
+            label_mdp2.configure(text='*' * len(mdp))
+    except:
+        return
 
 def checked ():
     return check_box.get()
@@ -62,6 +79,7 @@ label2.place(x=190, y=50)
 difficulte = customtkinter.CTkEntry(window, width=60, height=30)
 difficulte.place(x=290, y=50)
 
+# Permet de choisir chiffres seulement ou non
 check_box = customtkinter.CTkCheckBox(window, text="Chiffres seulement", command=checked, onvalue="on", offvalue="off")
 check_box.place(x=50, y= 100)
 
@@ -77,6 +95,10 @@ label_mdp2.place(x=145, y=250)
 
 label_copy = customtkinter.CTkLabel(window, text='', font=("", 12))
 label_copy.place(x=250, y=300)
+
+# Permet oui ou non l'affichage du mot de passe
+label_show = customtkinter.CTkCheckBox(window, text='Voir mot de passe', font=("", 10), command=show_mdp, onvalue="on", offvalue="off")
+label_show.place(x=30, y=300)
 
 # Affiche la fenêtre
 window.mainloop()
