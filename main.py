@@ -115,7 +115,7 @@ def set_language ():
         confirmTheme_bouton.configure(text="Confirm")
         button_copy.configure(text="Copy")
         window.title("Generator")
-        parameters_window.title("Parameters")
+        parameters_window.title("Settings")
         language = "en"
 
 # Paramètres de la fenêtre
