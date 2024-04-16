@@ -134,7 +134,7 @@ button_copy = customtkinter.CTkButton(window, text="", width=0, command=lambda: 
 open_parameters = customtkinter.CTkButton(window, text="⚙", font=("", 15), width=10, command=openParameters)
 open_parameters.place(x=5, y=5)
 
-close_parameters = customtkinter.CTkButton(parameters_window, text="⚙", font=("", 15), width=10, command=closeParameters)
+close_parameters = customtkinter.CTkButton(parameters_window, text="❌", font=("", 15), width=10, command=closeParameters)
 close_parameters.place(x=5, y=5)
 
 label = customtkinter.CTkLabel(window, text="Entrez la difficulté: ", font=("", 20))
