@@ -26,7 +26,10 @@ def Rmdp (difficulte):
 # Copie le mot de passe généré
 def copier (mdp):
     pyperclip.copy(mdp)
-    label_copy.configure(text="Copié ✅")
+    if language == "fr":
+        label_copy.configure(text="Copié ✅")
+    elif language == "en":
+        label_copy.configure(text="Copied ✅")
 
 # Génère le mot de passe en cliquant sur le bouton
 def on_click ():
@@ -45,7 +48,8 @@ def on_click ():
             else:
                 mdp = Rmdp(int(difficulte.get()) - 1)
             label_mdp2.configure(text='*' * int(difficulte.get()))
-        button_copy = customtkinter.CTkButton(window, text="Copier", width=40, command=lambda: copier(mdp))
+        set_language()
+        button.configure(width=40)
         label_copy.configure(text='')
         button_copy.place(x=175, y=300)
         show_mdp()
@@ -63,11 +67,75 @@ def show_mdp ():
 def checked ():
     return check_box.get()
 
+def openParameters ():
+    parameters_window.deiconify()
+
+def closeParameters ():
+    parameters_window.withdraw()
+
+def set_theme ():
+    if theme_input.get() == "Clair" or theme_input.get() == "Light":
+        customtkinter.set_appearance_mode("light")
+    elif theme_input.get() == "Sombre" or theme_input.get() == "Dark":
+        customtkinter.set_appearance_mode("dark")
+    elif theme_input.get() == "Système (par défaut)" or theme_input.get() == "System (default)":
+        customtkinter.set_appearance_mode("system")
+    window.deiconify()
+
+def set_language ():
+    global language
+    language = "fr"
+    if language_input.get() == "Français":
+        label.configure(text="Entrez la difficulté: ")
+        label2.configure(text="(max 800 000)")
+        check_box.configure(text="Chiffres seulement")
+        button.configure(text="Générer")
+        label_mdp1.configure(text='Mot de passe: ')
+        label_show.configure(text='Voir mot de passe')
+        label_language.configure(text="Choisir la langue :")
+        confirmLanguage_bouton.configure(text="Confirmer")
+        label_theme.configure(text="Choisir le thème :")
+        theme_input.configure(values=["Clair", "Sombre", "Système (par défaut)"])
+        confirmTheme_bouton.configure(text="Confirmer")
+        button_copy.configure(text="Copier")
+        window.title("Générateur")
+        parameters_window.title("Paramètres")
+        language = "fr"
+    elif language_input.get() == "English":
+        label.configure(text="Enter the difficulty: ")
+        label2.configure(text="(800 000 max)")
+        check_box.configure(text="Number only")
+        button.configure(text="Generate")
+        label_mdp1.configure(text='Password: ')
+        label_show.configure(text='Show password')
+        label_language.configure(text="Choose language :")
+        confirmLanguage_bouton.configure(text="Confirm")
+        label_theme.configure(text="Choose theme :")
+        theme_input.configure(values=["Light", "Dark", "System (default)"])
+        confirmTheme_bouton.configure(text="Confirm")
+        button_copy.configure(text="Copy")
+        window.title("Generator")
+        parameters_window.title("Parameters")
+        language = "en"
+
 # Paramètres de la fenêtre
 window = customtkinter.CTk()
-window.title("Mot de passe aléatoire")
+window.title("Générateur")
 window.geometry("400x350")
 window.resizable(False, False)
+
+parameters_window = customtkinter.CTk()
+parameters_window.title("Paramètres")
+parameters_window.geometry("400x350")
+parameters_window.resizable(False, False)
+
+button_copy = customtkinter.CTkButton(window, text="", width=0, command=lambda: copier(mdp))
+
+open_parameters = customtkinter.CTkButton(window, text="⚙", font=("", 15), width=10, command=openParameters)
+open_parameters.place(x=5, y=5)
+
+close_parameters = customtkinter.CTkButton(parameters_window, text="⚙", font=("", 15), width=10, command=closeParameters)
+close_parameters.place(x=5, y=5)
 
 label = customtkinter.CTkLabel(window, text="Entrez la difficulté: ", font=("", 20))
 label.place(x=10, y=50)
@@ -99,6 +167,25 @@ label_copy.place(x=250, y=300)
 # Permet oui ou non l'affichage du mot de passe
 label_show = customtkinter.CTkCheckBox(window, text='Voir mot de passe', font=("", 10), command=show_mdp, onvalue="on", offvalue="off")
 label_show.place(x=30, y=300)
+
+label_language = customtkinter.CTkLabel(parameters_window, text="Choisir la langue :", font=("", 15))
+label_language.place(x=20, y=50)
+
+language_input = customtkinter.CTkOptionMenu(parameters_window, values=["Français", "English"])
+language_input.place(x=170, y=50)
+
+confirmLanguage_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=set_language)
+confirmLanguage_bouton.place(x=130, y=100)
+
+label_theme = customtkinter.CTkLabel(parameters_window, text="Choisir le thème :", font=("", 15))
+label_theme.place(x=20, y=200)
+
+theme_input = customtkinter.CTkOptionMenu(parameters_window, values=["Clair", "Sombre", "Système (par défaut)"])
+theme_input.place(x=170, y=200)
+
+confirmTheme_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=set_theme)
+confirmTheme_bouton.place(x=130, y=250)
+
 
 # Affiche la fenêtre
 window.mainloop()
