@@ -1,6 +1,18 @@
 import customtkinter
 import random
 import pyperclip
+import json
+
+settings = {}
+
+def set_settings ():
+    with open('settings.json', 'w') as f:
+        json.dump(settings, f)
+
+def load_settings ():
+    global settings
+    with open('settings.json', 'r') as f:
+        settings = json.load(f)
 
 # Génère une suite de nombres aléatoire
 def RNombre (difficulte):
@@ -26,9 +38,9 @@ def Rmdp (difficulte):
 # Copie le mot de passe généré
 def copier (mdp):
     pyperclip.copy(mdp)
-    if language == "fr":
+    if settings['language'] == "fr":
         label_copy.configure(text="Copié ✅")
-    elif language == "en":
+    elif settings['language'] == "en":
         label_copy.configure(text="Copied ✅")
 
 # Génère le mot de passe en cliquant sur le bouton
@@ -73,19 +85,36 @@ def openParameters ():
 def closeParameters ():
     parameters_window.withdraw()
 
-def set_theme ():
-    if theme_input.get() == "Clair" or theme_input.get() == "Light":
-        customtkinter.set_appearance_mode("light")
+def button_set_theme ():
+    global theme
+    if theme_input.get() == "Clair" or theme_input.get() == "light":
+        theme = "light"
     elif theme_input.get() == "Sombre" or theme_input.get() == "Dark":
-        customtkinter.set_appearance_mode("dark")
+        theme = "dark"
     elif theme_input.get() == "Système (par défaut)" or theme_input.get() == "System (default)":
-        customtkinter.set_appearance_mode("system")
+        theme = "system"
+    set_theme()
+
+def set_theme ():
+    if 'theme' in globals():
+        settings['theme'] = theme
+    customtkinter.set_appearance_mode(settings['theme'])
     window.deiconify()
+    set_settings()
+
+def button_set_language ():
+    global language
+    if language_input.get() == "English":
+        language = "en"
+    elif language_input.get() == "Français":
+        language =  "fr"
+    set_language()
 
 def set_language ():
-    global language
-    language = "fr"
-    if language_input.get() == "Français":
+    if 'language' in globals():
+        settings['language'] = language
+
+    if settings['language'] == "fr":
         label.configure(text="Entrez la difficulté: ")
         label2.configure(text="(max 800 000)")
         check_box.configure(text="Chiffres seulement")
@@ -100,8 +129,8 @@ def set_language ():
         button_copy.configure(text="Copier")
         window.title("Générateur")
         parameters_window.title("Paramètres")
-        language = "fr"
-    elif language_input.get() == "English":
+
+    elif settings['language'] == "en":
         label.configure(text="Enter the difficulty: ")
         label2.configure(text="(800 000 max)")
         check_box.configure(text="Number only")
@@ -116,7 +145,7 @@ def set_language ():
         button_copy.configure(text="Copy")
         window.title("Generator")
         parameters_window.title("Settings")
-        language = "en"
+    set_settings()
 
 # Paramètres de la fenêtre
 window = customtkinter.CTk()
@@ -174,7 +203,7 @@ label_language.place(x=20, y=50)
 language_input = customtkinter.CTkOptionMenu(parameters_window, values=["Français", "English"])
 language_input.place(x=170, y=50)
 
-confirmLanguage_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=set_language)
+confirmLanguage_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=button_set_language)
 confirmLanguage_bouton.place(x=130, y=100)
 
 label_theme = customtkinter.CTkLabel(parameters_window, text="Choisir le thème :", font=("", 15))
@@ -183,9 +212,12 @@ label_theme.place(x=20, y=200)
 theme_input = customtkinter.CTkOptionMenu(parameters_window, values=["Clair", "Sombre", "Système (par défaut)"])
 theme_input.place(x=170, y=200)
 
-confirmTheme_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=set_theme)
+confirmTheme_bouton = customtkinter.CTkButton(parameters_window, text="Confirmer", font=("", 15), width=130, height=32, command=button_set_theme)
 confirmTheme_bouton.place(x=130, y=250)
 
+load_settings()
+set_language()
+set_theme()
 
 # Affiche la fenêtre
 window.mainloop()
